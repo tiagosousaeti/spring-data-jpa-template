@@ -1,23 +1,24 @@
 package br.eti.tiagosousa.springdatajpa.config.init;
 
-import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
+import java.util.List;
 
-import br.eti.tiagosousa.springdatajpa.config.WebConfig;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-public class AppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
+import br.eti.tiagosousa.springdatajpa.config.JpaConfig;
+import br.eti.tiagosousa.springdatajpa.model.Pessoa;
+import br.eti.tiagosousa.springdatajpa.repository.PessoaRepository;
 
-	@Override
-	protected Class<?>[] getRootConfigClasses() {
-		return null;
-	}
+public class AppInitializer {
 
-	@Override
-	protected Class<?>[] getServletConfigClasses() {
-		return new Class<?>[] { WebConfig.class };
-	}
+	public static void main(String[] args) {
+		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(JpaConfig.class);
 
-	@Override
-	protected String[] getServletMappings() {
-		return new String[] { "/" };
+		PessoaRepository pessoaRepository = context.getBean(PessoaRepository.class);
+
+		List<Pessoa> lista = pessoaRepository.listar();
+		
+		System.out.println(lista.size());
+		
+		context.close();
 	}
 }
